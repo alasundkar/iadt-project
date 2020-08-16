@@ -1,0 +1,16 @@
+{
+        "aws_access_key": "",
+        "aws_secret_key": "",
+        "vpc_region": "us-east-1",
+        "source_ami": "ami-0bcc094591f354be2",
+        "ssh_username": "ubuntu",
+        "ami_users": "671972652283",
+        "ami_regions": "us-east-2",
+        "ami_plan": "t2.micro",
+        "device_name": "/dev/sda1",
+        "volume_size": "8",
+        "volume_type": "gp2",
+        "delete_on_termination": "true"
+
+ }
+

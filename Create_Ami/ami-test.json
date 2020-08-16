@@ -1,0 +1,51 @@
+{
+    "builders": [
+      {
+        "type": "amazon-ebs",
+        "ami_users": "{{user `ami_users`}}",
+        "access_key": "{{user `aws_access_key`}}",
+        "secret_key": "{{user `aws_secret_key`}}",
+        "region": "{{user `aws_region`}}",
+        "instance_type": "{{ user `ami_plan`}}",
+	"ami_regions": "{{user `ami_regions` }}",
+        "subnet_id": "{{user `subnet_id`}}",
+        "source_ami": "{{user `source_ami`}}",
+        "ssh_username": "{{user `ssh_username`}}",
+        "ami_name": "IAD_{{timestamp}}",
+        "ami_description": "Ubuntu AMI for Assignment 7",
+        "launch_block_device_mappings":[
+            {
+                "device_name": "{{user `device_name`}}",
+                "volume_size": "{{user `volume_size`}}",
+                "volume_type": "{{user `volume_type`}}",
+                "delete_on_termination": "{{user `delete_on_termination`}}"
+            }
+        ]
+      }
+    ],
+  
+    "provisioners": [
+      {
+        "type": "shell",
+        "inline":["sudo apt update -y",
+"sudo apt install software-properties-common -y",
+"sudo apt-add-repository --yes --update ppa:ansible/ansible",
+"sudo apt install ansible -y",
+"sudo locale-gen en_US.UTF-8" ]
+      },
+      
+      {
+        "type": "ansible-local",
+        "playbook_file": "local.yml",
+	"role_paths": "/root/.ansible/roles/geerlingguy.postgresql"
+}
+      
+    ],
+     "post-processors": [
+    {
+      "type": "manifest",
+      "output": "manifest.json",
+      "strip_path": true
+    }
+  ]
+  }

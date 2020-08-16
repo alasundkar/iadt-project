@@ -1,29 +1,14 @@
-# README #
+# IADT Project #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+This is to get your application up and running.
 
-### What is this repository for? ###
+### How to Use it ###
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+``` bash
+packer build -var-file=var ami-test.json
+```
 
-### How do I get set up? ###
+```bash
+terraform apply -var 'access_key=< access key >' -var 'secret_key=< secret_key >' -var 'db_master_password=< password >'
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+```

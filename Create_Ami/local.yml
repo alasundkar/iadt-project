@@ -1,0 +1,52 @@
+---
+- hosts: localhost
+  become: yes
+  tasks:
+   - name: Ensure bash, OpenSSl, and libssl are the latest versions
+     apt: name={{ item }} update_cache=true state=present
+     with_items:
+       - python2.7      
+       - python-pip
+       - python-flask
+       - unzip
+       - python-psycopg2
+       - python-dev
+       - build-essential
+     tags: packages
+
+   - name: import postgres role
+     include_role:
+       name: geerlingguy.postgresql
+
+   - name: open ports for tcp
+     ufw:
+       rule: allow
+       port: "{{ item }}"
+       proto: udp
+     with_items:
+       - 43
+       - 22
+       - 8080
+
+   - name: open ports for udp
+     ufw:
+       rule: allow
+       port: "{{ item }}"
+       proto: tcp
+     with_items: 
+       - 43
+       - 22
+       - 8080
+
+   - name: Check all port numbers are accessible from current host
+     wait_for:
+       host: localhost
+       port: "{{ item }}"
+       state: started         # Port should be open
+       delay: 0               # No wait before first check (sec)
+       timeout: 3             # Stop checking after timeout (sec)
+     ignore_errors: yes
+     with_items:
+       - 43
+       - 22
+       - 8080
