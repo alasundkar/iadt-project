@@ -1,0 +1,36 @@
+---
+# Variable configuration.
+- include_tasks: variables.yml
+
+# Setup/install tasks.
+- include_tasks: setup-RedHat.yml
+  when: ansible_os_family == 'RedHat'
+
+- include_tasks: setup-Debian.yml
+  when: ansible_os_family == 'Debian'
+
+- include_tasks: initialize.yml
+- include_tasks: configure.yml
+
+- name: Ensure PostgreSQL is started and enabled on boot.
+  service:
+    name: "{{ postgresql_daemon }}"
+    state: "{{ postgresql_service_state }}"
+    enabled: "{{ postgresql_service_enabled }}"
+
+# Configure PostgreSQL.
+- import_tasks: users.yml
+- import_tasks: databases.yml
+
+- lineinfile:
+    path: /etc/environment
+    line: "db_user={{ postgresql_users[0].name }}"  
+- debug:
+       msg: "db_user={{ postgresql_users[0].name }}"
+
+- lineinfile:
+    path: /etc/environment
+    line: "db_password={{ postgresql_users[0].password }}"    
+    #- name: set env
+    #  shell: "export db_user='{{ postgresql_users[0].name }} '"
+    #- shell: "export db_password='{{ postgresql_users[0].password }} '"
