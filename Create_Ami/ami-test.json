@@ -11,7 +11,7 @@
         "subnet_id": "{{user `subnet_id`}}",
         "source_ami": "{{user `source_ami`}}",
         "ssh_username": "{{user `ssh_username`}}",
-        "ami_name": "IAD_{{timestamp}}",
+        "ami_name": "IAD_{{uuid}}",
         "ami_description": "Ubuntu AMI for Assignment 7",
         "launch_block_device_mappings":[
             {
@@ -29,7 +29,7 @@
         "type": "shell",
         "inline":["sudo apt update -y",
 "sudo apt install software-properties-common -y",
-"sudo apt-add-repository --yes --update ppa:ansible/ansible",
+"sudo apt-add-repository  --yes --update ppa:ansible/ansible",
 "sudo apt install ansible -y",
 "sudo locale-gen en_US.UTF-8" ]
       },
@@ -37,7 +37,7 @@
       {
         "type": "ansible-local",
         "playbook_file": "local.yml",
-	"role_paths": "/root/.ansible/roles/geerlingguy.postgresql"
+	"role_paths": "geerlingguy.postgresql"
 }
       
     ],
